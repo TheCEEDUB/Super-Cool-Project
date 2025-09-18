@@ -39,3 +39,15 @@ footer {
   border-radius: 12px;
   max-width: 90%;
 }
+<section>
+  <h2>My Video</h2>
+  <div class="video-box">
+    <iframe width="560" height="315" 
+            src="https://www.youtube.com/embed/https://www.youtube.com/watch?v=dQw4w9WgXcQ" 
+            title="YouTube video player" 
+            frameborder="0" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            allowfullscreen>
+    </iframe>
+  </div>
+</section>
