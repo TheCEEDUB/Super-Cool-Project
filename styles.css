@@ -32,3 +32,10 @@ footer {
   color: #666;
   font-size: 0.9em;
 }
+.video-box, video {
+  display: block;
+  margin: 20px auto;
+  border: 4px solid #2c3e50;
+  border-radius: 12px;
+  max-width: 90%;
+}
