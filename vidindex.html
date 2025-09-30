@@ -1,6 +1,53 @@
-<iframe width="560" height="315"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen>
-</iframe>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Videos</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;  /* vertical center */
+      align-items: center;      /* horizontal center */
+      min-height: 100vh;        /* full screen height */
+      margin: 0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    iframe {
+      width: 960px;   /* bigger width */
+      height: 540px;  /* bigger height (16:9 ratio) */
+      max-width: 90%; /* keep it responsive for smaller screens */
+    }
+
+    footer {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>My Video Page</h1>
+    <p>Here’s my project video, right in the center 🎬</p>
+  </header>
+
+  <section>
+    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen>
+    </iframe>
+  </section>
+
+  <footer>
+    <p><a href="index.html">⬅ Back to Home</a></p>
+  </footer>
+</body>
+</html>
