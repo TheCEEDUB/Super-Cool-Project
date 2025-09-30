@@ -42,6 +42,64 @@
       height: 720px;  /* bigger height (16:9 ratio) */
       max-width: 90%; /* keep it responsive for smaller screens */
     }
+     /* Arrow buttons */
+    .arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 191, 255, 0.8);
+      color: black;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .arrow:hover {
+      background: rgba(0, 153, 204, 0.9);
+      color: white;
+    }
+
+    .left {
+      left: -60px;
+    }
+
+    .right {
+      right: -60px;
+    }
+
+    footer {
+      margin-top: 20px;
+    }
+
+    a {
+      color: #00bfff;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1>My Video Playlist 🎬</h1>
+
+  <!-- Dynamic video title -->
+  <div id="video-title">Loading video...</div>
+
+  <!-- Video player with arrows -->
+  <div class="video-wrapper">
+    <button class="arrow left" onclick="prevVideo()">⟵</button>
+    <iframe id="video-player"
+            src=""
+            allow="autoplay; encrypted-media"
+            allowfullscreen></iframe>
+    <button class="arrow right" onclick="nextVideo()">⟶</button>
+  </div>
 
     footer {
       margin-top: 20px;
@@ -96,6 +154,21 @@
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     document.body.appendChild(tag);
+  </script>
+</body>
+</html>
+ function nextVideo() {
+      currentIndex = (currentIndex + 1) % videos.length;
+      loadVideo(currentIndex);
+    }
+
+    function prevVideo() {
+      currentIndex = (currentIndex - 1 + videos.length) % videos.length;
+      loadVideo(currentIndex);
+    }
+
+    // Load the first video on page load
+    loadVideo(currentIndex);
   </script>
 </body>
 </html>
