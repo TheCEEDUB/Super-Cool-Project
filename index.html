@@ -49,12 +49,53 @@
   </style>
 </head>
 <body>
-  <section>
-    <iframe src="https://www.youtube.com/embed/Of_9RTAr_28"
-            frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-    </iframe>
-  </section>
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/0f_9RTAr_28"
+            allow="autoplay; encrypted-media"
+            allowfullscreen></iframe>
+  </div>
+
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/zxbz3DDQzHU"
+            allow="autoplay; encrypted-media"
+            allowfullscreen></iframe>
+  </div>
+
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/CU-vvlFvzuk&list=RDCU-vvlFvzuk&start_radio=1"
+            allow="autoplay; encrypted-media"
+            allowfullscreen></iframe>
+  </div>
 
   <footer>
+    <p><a href="index.html">⬅ Back to Home</a></p>
+  </footer>
+
+  <!-- Script to stop other videos when one plays -->
+  <script>
+    function onYouTubeIframeAPIReady() {
+      const players = [];
+      const iframes = document.querySelectorAll("iframe");
+
+      iframes.forEach((iframe, index) => {
+        players[index] = new YT.Player(iframe, {
+          events: {
+            'onStateChange': (event) => {
+              if (event.data === YT.PlayerState.PLAYING) {
+                players.forEach((p, i) => {
+                  if (i !== index) p.pauseVideo();
+                });
+              }
+            }
+          }
+        });
+      });
+    }
+
+    // Load YouTube Iframe API
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+  </script>
+</body>
+</html>
