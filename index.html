@@ -1,174 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Worlds Coolest Vids</title>
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <h1>Worlds Coolest Vids</h1>
-  <p>This website is my first one ever so here goes nothing.</p>
-  <p>Made for my college class.</p>
-</body>
-</html>
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Videos</title>
-  <link rel="stylesheet" href="styles.css">
   <style>
+    /* Page Background */
     body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #000000, #8b0000);
       display: flex;
       flex-direction: column;
-      justify-content: center;  /* vertical center */
-      align-items: center;      /* horizontal center */
-      min-height: 100vh;        /* full screen height */
-      margin: 0;
-      font-family: Arial, sans-serif;
-      text-align: center;
-       background-color: black;  /*  background black */
-      color: white;             /* make text readable */
-    }
-
-    h1 {
-      margin-bottom: 20px;
-    }
-
-    iframe {
-      width: 1280px;   /* bigger width */
-      height: 720px;  /* bigger height (16:9 ratio) */
-      max-width: 90%; /* keep it responsive for smaller screens */
-    }
-     /* Arrow buttons */
-    .arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0, 191, 255, 0.8);
-      color: black;
-      border: none;
-      border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    .arrow:hover {
-      background: rgba(0, 153, 204, 0.9);
+      align-items: center;
+      justify-content: center;
+      font-family: 'Arial Black', sans-serif;
       color: white;
     }
 
-    .left {
-      left: -60px;
+    /* Header Title */
+    h1 {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
     }
 
-    .right {
-      right: -60px;
+    /* Video Box */
+    .video-container {
+      width: 1280px;
+      height: 720px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 5px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
     }
 
-    footer {
-      margin-top: 20px;
+    iframe, video {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
     }
 
-    a {
-      color: #00bfff;
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-  <h1>My Video Playlist 🎬</h1>
-
-  <!-- Dynamic video title -->
-  <div id="video-title">Loading video...</div>
-
-  <!-- Video player with arrows -->
-  <div class="video-wrapper">
-    <button class="arrow left" onclick="prevVideo()">⟵</button>
-    <iframe id="video-player"
-            src=""
-            allow="autoplay; encrypted-media"
-            allowfullscreen></iframe>
-    <button class="arrow right" onclick="nextVideo()">⟶</button>
-  </div>
-
-    footer {
-      margin-top: 20px;
+    /* Responsive (auto-resizes on small screens) */
+    @media (max-width: 1300px) {
+      .video-container {
+        width: 90%;
+        height: auto;
+        aspect-ratio: 16 / 9;
+      }
     }
   </style>
 </head>
 <body>
+  <h1>Worlds Coolest Vids</h1>
   <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/0f_9RTAr_28"
-            allow="autoplay; encrypted-media"
-            allowfullscreen></iframe>
+    <!-- Example YouTube embed, replace with your own -->
+    <iframe 
+      src="https://www.youtube.com/Of_9RTAr_28&t=1s" 
+      title="Coolest Video Ever"
+      allowfullscreen>
+    </iframe>
   </div>
-
-  <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/zxbz3DDQzHU"
-            allow="autoplay; encrypted-media"
-            allowfullscreen></iframe>
-  </div>
-
-  <div class="video-container">
-    <iframe src="https://www.youtube.com/embed/CU-vvlFvzuk&list=RDCU-vvlFvzuk&start_radio=1"
-            allow="autoplay; encrypted-media"
-            allowfullscreen></iframe>
-  </div>
-
-  <footer>
-    <p><a href="index.html">⬅ Back to Home</a></p>
-  </footer>
-
-  <!-- Script to stop other videos when one plays -->
-  <script>
-    function onYouTubeIframeAPIReady() {
-      const players = [];
-      const iframes = document.querySelectorAll("iframe");
-
-      iframes.forEach((iframe, index) => {
-        players[index] = new YT.Player(iframe, {
-          events: {
-            'onStateChange': (event) => {
-              if (event.data === YT.PlayerState.PLAYING) {
-                players.forEach((p, i) => {
-                  if (i !== index) p.pauseVideo();
-                });
-              }
-            }
-          }
-        });
-      });
-    }
-
-    // Load YouTube Iframe API
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
-  </script>
-</body>
-</html>
- function nextVideo() {
-      currentIndex = (currentIndex + 1) % videos.length;
-      loadVideo(currentIndex);
-    }
-
-    function prevVideo() {
-      currentIndex = (currentIndex - 1 + videos.length) % videos.length;
-      loadVideo(currentIndex);
-    }
-
-    // Load the first video on page load
-    loadVideo(currentIndex);
-  </script>
 </body>
 </html>
