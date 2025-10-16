@@ -6,154 +6,144 @@
   <title>Worlds Coolest Vids</title>
   <style>
     body {
+      background: linear-gradient(135deg, #000000, #8b0000);
+      color: white;
+      text-align: center;
+      font-family: Arial, sans-serif;
       margin: 0;
       height: 100vh;
-      background: linear-gradient(135deg, #000000, #8b0000);
       display: flex;
       flex-direction: column;
-      align-items: center;
       justify-content: center;
-      font-family: 'Arial Black', sans-serif;
-      color: white;
+      align-items: center;
+      gap: 20px;
     }
 
     h1 {
-      font-size: 3rem;
-      text-align: center;
-      margin-bottom: 30px;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    }
-
-    .video-container {
-      width: 1280px;
-      height: 720px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 5px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+      font-size: 2.5rem;
+      margin-bottom: 20px;
     }
 
     iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
+      width: 1280px;
+      height: 720px;
+      border: 4px solid #ff0000;
+      border-radius: 16px;
     }
 
     .controls {
-      margin-top: 20px;
       display: flex;
-      gap: 25px;
-      align-items: center;
       justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
     button {
-      background: rgba(255, 255, 255, 0.15);
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      color: white;
-      font-size: 1.5rem;
-      border-radius: 50%;
-      width: 70px;
-      height: 70px;
+      background: transparent;
+      border: none;
+      font-size: 2.5rem;
       cursor: pointer;
-      transition: all 0.25s ease;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+      transition: transform 0.2s ease;
     }
 
     button:hover {
-      background: rgba(255, 255, 255, 0.35);
-      transform: scale(1.1);
-    }
-
-    @media (max-width: 1300px) {
-      .video-container {
-        width: 90%;
-        height: auto;
-        aspect-ratio: 16 / 9;
-      }
-      button {
-        width: 55px;
-        height: 55px;
-        font-size: 1.2rem;
-      }
+      transform: scale(1.2);
     }
   </style>
 </head>
 <body>
   <h1>Worlds Coolest Vids</h1>
-  <div class="video-container">
-    <div id="videoPlayer"></div>
-  </div>
+
+  <iframe
+    id="videoFrame"
+    src=""
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+  ></iframe>
 
   <div class="controls">
     <button id="prevBtn">⏮️</button>
+    <button id="skipBackBtn">⏪ 5s</button>
     <button id="replayBtn">🔁</button>
+    <button id="skipForwardBtn">5s ⏩</button>
     <button id="nextBtn">⏭️</button>
   </div>
 
-  <!-- Load YouTube API -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-
   <script>
-    // === Add your YouTube video IDs here ===
-    const videoIDs = [
+    const videos = [
       "Hg6L_7qLIEQ", // Vid 1
       "lyUKY3L0wEo", // Vid 2
-      "JzMuvmnCdCg",  // Vid 3
+      "JzMuvmnCdCg", // Vid 3
       "390gYuwFwqo", // Vid 4
-      "zwVK7ZhjJOw",  // Vid 5
+      "zwVK7ZhjJOw"  // Vid 5
     ];
 
-    let currentVideo = 0;
+    let current = 0;
     let player;
 
-    // Called automatically by the YouTube IFrame API
+    // Load the YouTube IFrame API
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName("script")[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // When API is ready, create the player
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player("videoPlayer", {
+      player = new YT.Player("videoFrame", {
         height: "720",
         width: "1280",
-        videoId: videoIDs[currentVideo],
-        playerVars: {
-          autoplay: 1,
-          controls: 0,
-          rel: 0,
-          modestbranding: 1
-        },
+        videoId: videos[current],
+        playerVars: { autoplay: 1, controls: 0 },
         events: {
           onStateChange: onPlayerStateChange
         }
       });
     }
 
+    // Auto next when video ends
     function onPlayerStateChange(event) {
-      // When video ends, automatically go to next
       if (event.data === YT.PlayerState.ENDED) {
         nextVideo();
       }
     }
 
-    // Navigation functions
-    function loadVideo(index) {
-      currentVideo = (index + videoIDs.length) % videoIDs.length;
-      player.loadVideoById(videoIDs[currentVideo]);
+    function loadVideo() {
+      player.loadVideoById(videos[current]);
     }
 
     function nextVideo() {
-      loadVideo(currentVideo + 1);
+      current = (current + 1) % videos.length;
+      loadVideo();
     }
 
     function prevVideo() {
-      loadVideo(currentVideo - 1);
+      current = (current - 1 + videos.length) % videos.length;
+      loadVideo();
     }
 
+    // ⏩ skip 5 seconds
+    function skipForward() {
+      const currentTime = player.getCurrentTime();
+      player.seekTo(currentTime + 5, true);
+    }
+
+    // ⏪ go back 5 seconds
+    function skipBackward() {
+      const currentTime = player.getCurrentTime();
+      player.seekTo(Math.max(currentTime - 5, 0), true);
+    }
+
+    // 🎬 replay
     function replayVideo() {
-      if (player) player.seekTo(0);
+      player.seekTo(0, true);
     }
 
-    // Hook buttons
+    // Attach button events
     document.getElementById("nextBtn").addEventListener("click", nextVideo);
     document.getElementById("prevBtn").addEventListener("click", prevVideo);
+    document.getElementById("skipForwardBtn").addEventListener("click", skipForward);
+    document.getElementById("skipBackBtn").addEventListener("click", skipBackward);
     document.getElementById("replayBtn").addEventListener("click", replayVideo);
   </script>
 </body>
