@@ -41,7 +41,7 @@
     button {
       background: transparent;
       border: none;
-      font-size: 2.5rem;
+      font-size: 2rem;
       cursor: pointer;
       transition: transform 0.2s ease;
     }
@@ -54,21 +54,18 @@
 <body>
   <h1>Worlds Coolest Vids</h1>
 
-  <iframe
-    id="videoFrame"
-    src=""
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen
-  ></iframe>
+  <div id="player"></div>
 
   <div class="controls">
     <button id="prevBtn">⏮️</button>
-    <button id="skipBackBtn">⏪ 5s</button>
+    <button id="backBtn">⏪ 5s</button>
     <button id="replayBtn">🔁</button>
-    <button id="skipForwardBtn">5s ⏩</button>
+    <button id="forwardBtn">5s ⏩</button>
     <button id="nextBtn">⏭️</button>
   </div>
+
+  <!-- ✅ Load YouTube IFrame API FIRST -->
+  <script src="https://www.youtube.com/iframe_api"></script>
 
   <script>
     const videos = [
@@ -76,21 +73,15 @@
       "lyUKY3L0wEo", // Vid 2
       "JzMuvmnCdCg", // Vid 3
       "390gYuwFwqo", // Vid 4
-      "zwVK7ZhjJOw",  // Vid 5
+      "zwVK7ZhjJOw"  // Vid 5
     ];
 
     let current = 0;
     let player;
 
-    // Load the YouTube IFrame API
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName("script")[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    // When API is ready, create the player
+    // YouTube API calls this automatically
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player("videoFrame", {
+      player = new YT.Player("player", {
         height: "720",
         width: "1280",
         videoId: videos[current],
@@ -122,29 +113,31 @@
       loadVideo();
     }
 
-    // ⏩ skip 5 seconds
-    function skipForward() {
-      const currentTime = player.getCurrentTime();
-      player.seekTo(currentTime + 5, true);
-    }
-
-    // ⏪ go back 5 seconds
-    function skipBackward() {
-      const currentTime = player.getCurrentTime();
-      player.seekTo(Math.max(currentTime - 5, 0), true);
-    }
-
-    // 🎬 replay
     function replayVideo() {
       player.seekTo(0, true);
     }
 
-    // Attach button events
-    document.getElementById("nextBtn").addEventListener("click", nextVideo);
-    document.getElementById("prevBtn").addEventListener("click", prevVideo);
-    document.getElementById("skipForwardBtn").addEventListener("click", skipForward);
-    document.getElementById("skipBackBtn").addEventListener("click", skipBackward);
-    document.getElementById("replayBtn").addEventListener("click", replayVideo);
+    function skipForward() {
+      const t = player.getCurrentTime();
+      player.seekTo(t + 5, true);
+    }
+
+    function skipBack() {
+      const t = player.getCurrentTime();
+      player.seekTo(Math.max(t - 5, 0), true);
+    }
+
+    // Wait until player exists before connecting buttons
+    function setupButtons() {
+      document.getElementById("nextBtn").addEventListener("click", nextVideo);
+      document.getElementById("prevBtn").addEventListener("click", prevVideo);
+      document.getElementById("replayBtn").addEventListener("click", replayVideo);
+      document.getElementById("forwardBtn").addEventListener("click", skipForward);
+      document.getElementById("backBtn").addEventListener("click", skipBack);
+    }
+
+    // YouTube API loads async, so wait a second for it
+    setTimeout(setupButtons, 2000);
   </script>
 </body>
 </html>
