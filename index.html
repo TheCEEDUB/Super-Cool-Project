@@ -5,6 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Worlds Coolest Vids</title>
   <style>
+    /* Page Background */
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #000000, #8b0000);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Arial Black', sans-serif;
+      color: white;
+    }
+
+    /* Header Title */
+    h1 {
+      font-size: 3rem;
+      text-align: center;
+      margin-bottom: 30px;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Video Box */
+    .video-container {
+      width: 1280px;
+      height: 720px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 5px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    }
+
+    iframe, video {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
     body {
       background: linear-gradient(135deg, #000000, #8b0000);
       color: white;
