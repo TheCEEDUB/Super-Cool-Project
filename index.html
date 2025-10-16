@@ -1,109 +1,3 @@
-Skip to content
-Chat history
-
-You said:
-ok so i want to make a website that shows the worlds coolest videos, Here is my in detail of what I want it to look like. Header in the center top of the screen that says Worlds Coolest Vids, Then i want a 1280x720 pixel box to fit a 1280x720 res video in.I would like it to have a rectangle border just around the video that has smooth corners, I want the background to be a red black gradient. it is on githup btwe
-ChatGPT said:
-Perfect — that’s a clean and striking idea. Let’s make your “Worlds Coolest Vids” site look awesome and easy to host on GitHub Pages.
-
-Here’s a ready-to-upload HTML + CSS file that matches exactly what you described:
-
-🧾 index.html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Worlds Coolest Vids</title>
-  <style>
-    /* Page Background */
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #000000, #8b0000);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Arial Black', sans-serif;
-      color: white;
-    }
-
-    /* Header Title */
-    h1 {
-      font-size: 3rem;
-      text-align: center;
-      margin-bottom: 30px;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    }
-
-    /* Video Box */
-    .video-container {
-      width: 1280px;
-      height: 720px;
-      border-radius: 20px;
-      overflow: hidden;
-      border: 5px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
-    }
-
-    iframe, video {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-
-    /* Responsive (auto-resizes on small screens) */
-    @media (max-width: 1300px) {
-      .video-container {
-        width: 90%;
-        height: auto;
-        aspect-ratio: 16 / 9;
-      }
-    }
-  </style>
-</head>
-<body>
-  <h1>Worlds Coolest Vids</h1>
-  <div class="video-container">
-    <!-- Example YouTube embed, replace with your own -->
-    <iframe 
-      src="https://www.youtube.com/embed/dQw4w9WgXcQ" 
-      title="Coolest Video Ever"
-      allowfullscreen>
-    </iframe>
-  </div>
-</body>
-</html>
-🚀 How to upload it to GitHub Pages:
-Create a new GitHub repo (e.g. worlds-coolest-vids).
-
-Upload this file as index.html.
-
-Go to Settings → Pages → Source → Deploy from branch → main → / (root).
-
-After a few minutes, your site will be live at:
-
-https://yourusername.github.io/worlds-coolest-vids/
-Would you like me to add things like:
-
-A button to cycle through multiple videos?
-
-Auto-play and background music?
-
-Animated text or a loading screen?
-
-I can build the next version for you depending on your vibe — minimal & sleek, or flashy & animated.
-
-You said:
-ok, so I want to be able to add multiple videos that play, i dont want multiple boxes for  the video just one, and after the first video is over the next one plays.
-ChatGPT said:
-Got it ✅ — you want one video box (1280×720) and multiple videos that play one after another automatically — no extra boxes, no clicks needed.
-
-Here’s a clean setup that does exactly that. It supports YouTube videos (via embed links), plays one, then automatically loads the next when it finishes.
-
-🧾 index.html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -146,11 +40,43 @@ Here’s a clean setup that does exactly that. It supports YouTube videos (via e
       display: block;
     }
 
+    /* Control Buttons */
+    .controls {
+      margin-top: 20px;
+      display: flex;
+      gap: 25px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      color: white;
+      font-size: 1.5rem;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(1.1);
+    }
+
     @media (max-width: 1300px) {
       .video-container {
         width: 90%;
         height: auto;
         aspect-ratio: 16 / 9;
+      }
+      button {
+        width: 55px;
+        height: 55px;
+        font-size: 1.2rem;
       }
     }
   </style>
@@ -161,50 +87,74 @@ Here’s a clean setup that does exactly that. It supports YouTube videos (via e
     <iframe 
       id="videoPlayer"
       src=""
-      title="Worlds Coolest Vids"
+      title="Worlds Coolest Video"
       allow="autoplay; fullscreen"
       allowfullscreen>
     </iframe>
   </div>
 
+  <div class="controls">
+    <button id="prevBtn">⏮️</button>
+    <button id="replayBtn">🔁</button>
+    <button id="nextBtn">⏭️</button>
+  </div>
+
   <script>
-    // === Add your YouTube video IDs here ===
+    // === Your YouTube video IDs ===
     const videoIDs = [
-      "Of_9RTAr_28&t=1s", // example 1
-      "Hg6L_7qLIEQ", // example 2
-      "JzMuvmnCdCg"  // example 3
+      "Of_9RTAr_28&t=1s", // Video 1
+      "Hg6L_7qLIEQ", // Video 2
+      "JzMuvmnCdCg"  // Video 3
     ];
 
     let currentVideo = 0;
-    const player = document.getElementById("videoPlayer");
-
-    // Load the first video
-    function loadVideo(index) {
-      const videoID = videoIDs[index];
-      player.src = `https://www.youtube.com/embed/${videoID}?autoplay=1&enablejsapi=1`;
-    }
-
-    // Use YouTube IFrame API to detect when video ends
-    function onYouTubeIframeAPIReady() {
-      new YT.Player("videoPlayer", {
-        events: {
-          onStateChange: (event) => {
-            if (event.data === YT.PlayerState.ENDED) {
-              currentVideo = (currentVideo + 1) % videoIDs.length;
-              loadVideo(currentVideo);
-            }
-          }
-        }
-      });
-    }
+    let ytPlayer;
 
     // Load YouTube API
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     document.body.appendChild(tag);
 
-    // Start first video when API is ready
-    window.onload = () => loadVideo(currentVideo);
+    // Create player when API ready
+    function onYouTubeIframeAPIReady() {
+      ytPlayer = new YT.Player("videoPlayer", {
+        videoId: videoIDs[currentVideo],
+        playerVars: { autoplay: 1, controls: 0 },
+        events: {
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.ENDED) {
+        nextVideo();
+      }
+    }
+
+    function loadVideo(index) {
+      if (!ytPlayer) return;
+      currentVideo = (index + videoIDs.length) % videoIDs.length;
+      ytPlayer.loadVideoById(videoIDs[currentVideo]);
+    }
+
+    // Button functions
+    function nextVideo() {
+      loadVideo(currentVideo + 1);
+    }
+
+    function prevVideo() {
+      loadVideo(currentVideo - 1);
+    }
+
+    function replayVideo() {
+      if (ytPlayer) ytPlayer.seekTo(0);
+    }
+
+    // Hook up buttons
+    document.getElementById("nextBtn").onclick = nextVideo;
+    document.getElementById("prevBtn").onclick = prevVideo;
+    document.getElementById("replayBtn").onclick = replayVideo;
   </script>
 </body>
 </html>
