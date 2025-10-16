@@ -40,7 +40,6 @@
       display: block;
     }
 
-    /* Control Buttons */
     .controls {
       margin-top: 20px;
       display: flex;
@@ -84,13 +83,7 @@
 <body>
   <h1>Worlds Coolest Vids</h1>
   <div class="video-container">
-    <iframe 
-      id="videoPlayer"
-      src=""
-      title="Worlds Coolest Video"
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
+    <div id="videoPlayer"></div>
   </div>
 
   <div class="controls">
@@ -99,27 +92,32 @@
     <button id="nextBtn">⏭️</button>
   </div>
 
+  <!-- Load YouTube API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
   <script>
-    // === Your YouTube video IDs ===
+    // === Add your YouTube video IDs here ===
     const videoIDs = [
-      "Of_9RTAr_28&t=1s", // Video 1
-      "Hg6L_7qLIEQ", // Video 2
-      "JzMuvmnCdCg"  // Video 3
+      "Of_9RTAr_28&t=1s", // Example 1
+      "Hg6L_7qLIEQ", // Example 2
+      "JzMuvmnCdCg"  // Example 3
     ];
 
     let currentVideo = 0;
-    let ytPlayer;
+    let player;
 
-    // Load YouTube API
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.body.appendChild(tag);
-
-    // Create player when API ready
+    // Called automatically by the YouTube IFrame API
     function onYouTubeIframeAPIReady() {
-      ytPlayer = new YT.Player("videoPlayer", {
+      player = new YT.Player("videoPlayer", {
+        height: "720",
+        width: "1280",
         videoId: videoIDs[currentVideo],
-        playerVars: { autoplay: 1, controls: 0 },
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          rel: 0,
+          modestbranding: 1
+        },
         events: {
           onStateChange: onPlayerStateChange
         }
@@ -127,18 +125,18 @@
     }
 
     function onPlayerStateChange(event) {
+      // When video ends, automatically go to next
       if (event.data === YT.PlayerState.ENDED) {
         nextVideo();
       }
     }
 
+    // Navigation functions
     function loadVideo(index) {
-      if (!ytPlayer) return;
       currentVideo = (index + videoIDs.length) % videoIDs.length;
-      ytPlayer.loadVideoById(videoIDs[currentVideo]);
+      player.loadVideoById(videoIDs[currentVideo]);
     }
 
-    // Button functions
     function nextVideo() {
       loadVideo(currentVideo + 1);
     }
@@ -148,13 +146,13 @@
     }
 
     function replayVideo() {
-      if (ytPlayer) ytPlayer.seekTo(0);
+      if (player) player.seekTo(0);
     }
 
-    // Hook up buttons
-    document.getElementById("nextBtn").onclick = nextVideo;
-    document.getElementById("prevBtn").onclick = prevVideo;
-    document.getElementById("replayBtn").onclick = replayVideo;
+    // Hook buttons
+    document.getElementById("nextBtn").addEventListener("click", nextVideo);
+    document.getElementById("prevBtn").addEventListener("click", prevVideo);
+    document.getElementById("replayBtn").addEventListener("click", replayVideo);
   </script>
 </body>
 </html>
